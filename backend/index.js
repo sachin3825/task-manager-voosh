@@ -2,17 +2,29 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
-import { userRoutes } from './routes/index.js';
+import { userRoutes, taskRoutes } from './routes/index.js';
+import { cloudinaryConnect } from './config/cloudinary.js';
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use('/api/v1/user', userRoutes);
-
 connectDB();
+cloudinaryConnect();
+
+const apiRouter = express.Router();
+
+apiRouter.use('/user', userRoutes);
+apiRouter.use('/task', taskRoutes);
+
+app.use('/api/v1', apiRouter);
+
+app.use('*', (req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
+  });
+});
 
 const PORT = process.env.PORT || 4000;
 

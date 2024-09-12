@@ -1,10 +1,12 @@
 import { signinSchema, normalSignupSchema, googleSignupSchema } from '../utils/validation.js';
+import { uploadImageToCloudinary } from '../utils/uploadFile.js';
 import User from '../models/user.js';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import Otp from '../models/otp.js';
 import sendMail from '../utils/sendEmail.js';
+import { clearUploadFolder } from '../utils/uploadFile.js';
 dotenv.config();
 
 export const verifyOtp = async (email, otp) => {
@@ -213,5 +215,58 @@ export const signup = async (req, res) => {
     const user = newUser.toObject();
     delete user.password;
     res.status(201).json({ user, token });
+  }
+};
+
+export const updateAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded',
+      });
+    }
+
+    const displayPicture = req.file;
+    const userId = req.user.id;
+
+    const image = await uploadImageToCloudinary(
+      displayPicture,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    );
+
+    clearUploadFolder();
+
+    const updatedProfile = await User.findByIdAndUpdate(
+      userId,
+      { avatar: image.secure_url },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Image updated successfully',
+      data: updatedProfile,
+    });
+  } catch (error) {
+    console.error('Error updating display picture:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

@@ -13,6 +13,7 @@ import PublicRoute from './components/PublicRoute';
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import Profile from './pages/Profile';
 
 function Home() {
   const token = useSelector((state) => state.auth.token);
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Dashboard />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'profile',
+        element: (
+          <PrivateRoute>
+            <Profile />
           </PrivateRoute>
         ),
       },
