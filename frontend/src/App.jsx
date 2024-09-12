@@ -11,6 +11,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import PublicRoute from './components/PublicRoute';
 import { Toaster } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 function Home() {
   const token = useSelector((state) => state.auth.token);
@@ -28,8 +30,7 @@ const router = createBrowserRouter([
         path: 'login',
         element: (
           <PublicRoute>
-            {' '}
-            <Login />{' '}
+            <Login />
           </PublicRoute>
         ),
       },

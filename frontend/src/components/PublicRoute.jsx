@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 const PublicRoute = ({ children }) => {
   const token = useSelector((state) => state.auth.token);
 
-  return token ? <Navigate to="/dashboard" /> : children;
+  return !token ? children : <Navigate to="/dashboard" />;
 };
 
 export default PublicRoute;

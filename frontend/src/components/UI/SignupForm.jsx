@@ -28,19 +28,24 @@ const SignupForm = () => {
   } = useForm({ mode: 'onChange' });
 
   const onSubmit = async (data) => {
+    const loadingToastId = toast.loading('Processing...'); // Show loading toast
+
     try {
       if (!otpSent) {
         await sendOtpApi({ email: data.email }).unwrap();
         setOtpSent(true);
+        toast.dismiss(loadingToastId); // Dismiss loading toast
         toast.success('OTP sent successfully!');
       } else {
         const signupData = { ...data, otp };
         const response = await signupApi(signupData).unwrap();
+        toast.dismiss(loadingToastId); // Dismiss loading toast
         toast.success('Signup successful!');
         dispatch(login({ token: response.token, user: response.newUser }));
         navigate('/dashboard');
       }
     } catch (error) {
+      toast.dismiss(loadingToastId); // Dismiss loading toast
       if (error?.data?.message === 'Invalid or expired OTP!') {
         setOtpSent(false);
         setOtp('');
