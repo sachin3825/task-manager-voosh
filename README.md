@@ -208,10 +208,4 @@ VITE_GOOGLE_CLIENT_SECRET=<your-google-client-secret>
 
 These environment variables are essential for connecting to MongoDB, securing JWT tokens, sending emails via Nodemailer, storing images via Cloudinary, and authenticating users via Google.
 
-## Additional Information
-
-- For styling, TailwindCSS is configured and integrated with Vite for fast reloads and development.
-- Redux Toolkit (RTK) is used for state management, allowing for simple and scalable state management for task data.
-- Zod is used in both the frontend and backend for form validation, ensuring that user input is clean and secure.
-- Nodemailer is used to send out emails to users after registration, helping to maintain user engagement.
 
