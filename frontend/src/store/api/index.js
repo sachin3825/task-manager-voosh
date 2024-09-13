@@ -8,7 +8,7 @@ const DELETE = 'DELETE';
 export const userApi = createApi({
   reducerPath: 'api', // Ensure this matches your reducer path
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/api/v1',
+    baseUrl: 'https://task-manager-voosh.adaptable.app/api/v1',
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token;
       if (token) {
