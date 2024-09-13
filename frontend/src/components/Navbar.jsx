@@ -27,7 +27,10 @@ const Navbar = () => {
   return (
     <header className="w-full p-2 bg-blue-500 text-white">
       <nav className="flex w-10/12 mx-auto justify-between items-center">
-        <FaTasks color="white" />
+        <NavLink to={'/dashboard'}>
+          <FaTasks color="white" />
+        </NavLink>
+
         <div className="flex items-center gap-4">
           {token ? (
             <>
@@ -35,7 +38,7 @@ const Navbar = () => {
                 <button onClick={toggleDropdown} className="flex items-center space-x-2">
                   {user?.avatar ? (
                     <img
-                      src={user.avatar}
+                      src={`${user.avatar}?t=${new Date().getTime()}`} // Adding a timestamp to avoid caching
                       alt={`${user.firstName} ${user.lastName}`}
                       className="w-8 h-8 rounded-full object-cover"
                     />
@@ -45,6 +48,7 @@ const Navbar = () => {
                       className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center"
                     />
                   )}
+
                   <span className="text-white font-semibold">{user?.firstName || 'User'}</span>
 
                   {dropdownOpen ? (
