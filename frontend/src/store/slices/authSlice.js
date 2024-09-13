@@ -25,4 +25,9 @@ const authSlice = createSlice({
 
 export const { login, logout, updateUser } = authSlice.actions;
 
+export const performLogout = () => (dispatch) => {
+  dispatch(logout());
+  dispatch(apiSlice.util.invalidateTags(['Task']));
+};
+
 export default authSlice.reducer;

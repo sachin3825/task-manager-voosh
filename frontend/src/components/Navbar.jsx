@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/slices/authSlice';
 import InitialsAvatar from 'react-initials-avatar';
 import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
-
+import { persistor } from '../store/store';
+import { performLogout } from '../store/slices/authSlice';
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(performLogout());
+    persistor.purge();
     navigate('/login');
   };
 

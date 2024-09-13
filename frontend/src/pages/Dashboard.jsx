@@ -28,6 +28,12 @@ const Dashboard = () => {
   const [sortOption, setSortOption] = useState('default');
 
   useEffect(() => {
+    if (token) {
+      refetch();
+    }
+  }, [token, refetch]);
+
+  useEffect(() => {
     if (fetchedTasks) {
       setTasks(fetchedTasks.tasks);
     } else {
