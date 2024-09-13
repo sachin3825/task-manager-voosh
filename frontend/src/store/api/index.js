@@ -6,7 +6,7 @@ const PATCH = 'PATCH';
 const DELETE = 'DELETE';
 
 export const userApi = createApi({
-  reducerPath: 'api', // Ensure this matches your reducer path
+  reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://task-manager-voosh.adaptable.app/api/v1',
     prepareHeaders: (headers, { getState }) => {
