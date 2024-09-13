@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from '../components/UI/Button';
 import ModalComponent from '../components/Modal';
 import TaskColumn from '../components/TaskColumn';
+import { useSelector } from 'react-redux';
 import {
   useCreateTaskMutation,
   useDeleteTaskMutation,
@@ -12,6 +13,7 @@ import useApiErrorHandling from '../hooks/useApiErrorHandling';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
+  const token = useSelector((state) => state.auth.token);
   const [tasks, setTasks] = useState([]);
   const { handleApiError } = useApiErrorHandling();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,14 +24,22 @@ const Dashboard = () => {
   const [deleteTask] = useDeleteTaskMutation();
   const { data: fetchedTasks, refetch } = useGetAllTasksQuery();
 
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
-  const [sortOption, setSortOption] = useState('default'); // State for sort option
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState('default');
 
   useEffect(() => {
     if (fetchedTasks) {
       setTasks(fetchedTasks.tasks);
+    } else {
+      setTasks([]);
     }
   }, [fetchedTasks]);
+
+  useEffect(() => {
+    if (!token) {
+      setTasks([]);
+    }
+  }, [token]);
 
   const openModal = (task = null, mode = 'create') => {
     setSelectedTask(task);
