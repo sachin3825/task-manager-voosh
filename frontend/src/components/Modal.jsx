@@ -68,7 +68,11 @@ const ModalComponent = ({
               <label className="block text-sm font-medium text-gray-700">Title</label>
               <input
                 type="text"
-                {...register('title', { required: 'Title is required' })}
+                {...register('title', {
+                  required: 'Title is required',
+                  validate: (value) =>
+                    value.trim() !== '' || 'Title cannot be empty or just spaces',
+                })}
                 disabled={mode === 'view'}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -77,10 +81,16 @@ const ModalComponent = ({
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">Description</label>
               <textarea
-                {...register('description')}
+                {...register('description', {
+                  validate: (value) =>
+                    value.trim() !== '' || 'Description cannot be empty or just spaces',
+                })}
                 disabled={mode === 'view'}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
+              {errors.description && (
+                <p className="text-red-500 text-sm">{errors.description.message}</p>
+              )}
             </div>
             <div className="flex justify-end space-x-4">
               <button
